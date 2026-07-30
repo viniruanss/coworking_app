@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id             Int       @id @default(autoincrement())
+  nome           String
+  email          String    @unique
+  senha_hash     String
+  telefone       String?
+  cpf            String    @unique
+  id_endereco    Int?
+  endereco       Endereco? @relation(fields: [id_endereco], references: [id])
+  e_admin        Boolean   @default(false)
+  dt_criacao     DateTime  @default(now())
+  dt_atualizacao DateTime  @updatedAt
+
+  reservas       Reserva[]
+
+  @@map("usuarios")
+}
+
+model Endereco {
+  id          Int    @id @default(autoincrement())
+  rua         String
+  numero      String
+  complemento String?
+  bairro      String
+  cep         String
+  cidade      String
+  uf          String
+
+  usuarios    Usuario[]
+
+  @@map("enderecos")
+}
+
+model Sala {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  tipo           String   @default("sala")
+  capacidade     Int
+  descricao      String?
+  preco_locacao  Decimal
+  dt_criacao     DateTime @default(now())
+  dt_atualizacao DateTime @updatedAt
+
+  reservas       Reserva[]
+
+  @@map("salas")
+}
+
+model Reserva {
+  id          Int      @id @default(autoincrement())
+  id_usuario  Int
+  usuario     Usuario  @relation(fields: [id_usuario], references: [id])
+  id_sala     Int
+  sala        Sala     @relation(fields: [id_sala], references: [id])
+  dia         DateTime
+  turno       String
+  status      String   @default("pendente")
+  expira_em   DateTime?
+  dt_criacao  DateTime @default(now())
+
+  @@map("reservas")
+}
