@@ -2,10 +2,15 @@ import { useState, type ReactNode } from "react";
 import { AuthContext, type Usuario } from "./AuthContext";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [usuario, setUsuario] = useState<Usuario | null>(() => {
+const [usuario, setUsuario] = useState<Usuario | null>(() => {
+  try {
     const salvo = localStorage.getItem("usuario");
     return salvo ? JSON.parse(salvo) : null;
-  });
+  } catch {
+    localStorage.removeItem("usuario"); // limpa o dado corrompido
+    return null;
+  }
+});
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
 
   function logar(novoToken: string, novoUsuario: Usuario) {

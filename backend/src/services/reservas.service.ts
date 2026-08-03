@@ -1,4 +1,5 @@
 import { PrismaClient, Reserva } from "@prisma/client";
+import { enviarEmailConfirmacao } from "./email.service.js"; // ← NOVO IMPORT
 
 const prisma = new PrismaClient();
 
@@ -20,7 +21,6 @@ export async function criarReservaPendente(dados: {
   dia: Date;
   turno: string;
 }): Promise<Reserva> {
-  //verifica se ja existe reserva conflitante com o findfirst, se existir, lança um erro
   const conflito = await prisma.reserva.findFirst({
     where: {
       id_sala: dados.id_sala,
@@ -30,7 +30,7 @@ export async function criarReservaPendente(dados: {
         { status: "confirmada" },
         {
           status: "pendente",
-          expira_em: { gt: new Date() }, // ainda não expirou
+          expira_em: { gt: new Date() },
         },
       ],
     },
@@ -40,7 +40,6 @@ export async function criarReservaPendente(dados: {
     throw new Error("Sala já reservada nesse dia e turno");
   }
 
-  //reserva com soft lock de 10min
   const expira_em = new Date(Date.now() + 10 * 60 * 1000);
 
   return prisma.reserva.create({
@@ -55,15 +54,33 @@ export async function criarReservaPendente(dados: {
   });
 }
 
+// ↓ SÓ ESSA FUNÇÃO MUDA DE VERDADE ↓
 export async function atualizarStatusReserva(
   id: number,
   novoStatus: "confirmada" | "cancelada"
 ): Promise<Reserva> {
-  return prisma.reserva.update({
+  const reserva = await prisma.reserva.update({
     where: { id },
     data: {
       status: novoStatus,
       expira_em: novoStatus === "confirmada" ? null : undefined,
     },
+    include: { usuario: true, sala: true },
   });
+
+  if (novoStatus === "confirmada") {
+    try {
+      await enviarEmailConfirmacao({
+        emailDestino: reserva.usuario.email,
+        nomeUsuario: reserva.usuario.nome,
+        nomeSala: reserva.sala.nome,
+        dia: reserva.dia.toISOString(),
+        turno: reserva.turno,
+      });
+    } catch (error) {
+      console.error("Falha ao enviar e-mail de confirmação:", error);
+    }
+  }
+
+  return reserva;
 }

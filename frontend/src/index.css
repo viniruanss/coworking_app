@@ -1,1 +1,34 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-carvao: #1F2421;
+  --color-papel: #FAF9F6;
+  --color-superficie: #FFFFFF;
+  --color-salvia: #6B8F71;
+  --color-mostarda: #D4A24C;
+  --color-terracota: #C1573B;
+  --color-cinza-verde: #5B6B63;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+.dark {
+  --color-carvao: #F3F1EC;
+  --color-papel: #161916;
+  --color-superficie: #1F231F;
+  --color-salvia: #8FB596;
+  --color-mostarda: #E0B368;
+  --color-terracota: #DB7A61;
+  --color-cinza-verde: #9CA8A1;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-papel);
+  color: var(--color-carvao);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
