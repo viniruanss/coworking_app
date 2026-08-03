@@ -16,7 +16,14 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
+<Route
+  path="/"
+  element={
+    <RotaProtegida>
+      <Home />
+    </RotaProtegida>
+  }
+/>
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/reservar/:salaId" element={<ReservarSala />} />
           <Route path="/minhas-reservas" element={<MinhasReservas />} />
