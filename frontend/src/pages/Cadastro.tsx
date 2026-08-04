@@ -75,7 +75,7 @@ export default function Cadastro() {
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 required
-                className="w-full rounded-xl border border-carvao/15 bg-white px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
 
@@ -86,7 +86,7 @@ export default function Cadastro() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border border-carvao/15 bg-white px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
 
@@ -98,7 +98,7 @@ export default function Cadastro() {
                 onChange={(e) => setSenha(e.target.value)}
                 required
                 minLength={6}
-                className="w-full rounded-xl border border-carvao/15 bg-white px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function Cadastro() {
                   required
                   maxLength={11}
                   placeholder="Só números"
-                  className="w-full rounded-xl border border-carvao/15 bg-white px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
               </div>
               <div>
@@ -124,7 +124,7 @@ export default function Cadastro() {
                   value={telefone}
                   onChange={(e) => setTelefone(e.target.value)}
                   placeholder="Opcional"
-                  className="w-full rounded-xl border border-carvao/15 bg-white px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
               </div>
             </div>

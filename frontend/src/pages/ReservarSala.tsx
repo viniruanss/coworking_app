@@ -9,7 +9,7 @@ import {
 import { useAuth } from "../context/useAuth";
 import { useContagemRegressiva } from "../hooks/useContagemRegressiva";
 import AnelProgresso from "../components/AnelProgresso";
-import { TURNOS, labelDoTurno } from "../utils/turnos";
+import { TURNOS, labelDoTurno, hojeISO, turnoJaPassou } from "../utils/turnos";
 
 
 const DEZ_MINUTOS_EM_SEGUNDOS = 600;
@@ -37,10 +37,16 @@ export default function ReservarSala() {
     );
   }
 
-  async function handleCriarReserva(event: FormEvent) {
-    event.preventDefault();
-    setErro("");
-    setCarregando(true);
+async function handleCriarReserva(event: FormEvent) {
+  event.preventDefault();
+  setErro("");
+
+  if (turnoJaPassou(dia, turno)) {
+    setErro("Esse dia ou turno já passou. Escolha outro horário.");
+    return;
+  }
+
+  setCarregando(true);
 
     try {
       const reserva = await criarReserva({
@@ -116,6 +122,7 @@ export default function ReservarSala() {
                   type="date"
                   value={dia}
                   onChange={(e) => setDia(e.target.value)}
+                  min={hojeISO()}
                   required
                   className="w-full rounded-xl border border-carvao/15 bg-papel px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
