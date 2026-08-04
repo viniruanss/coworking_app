@@ -11,7 +11,6 @@ import { useContagemRegressiva } from "../hooks/useContagemRegressiva";
 import AnelProgresso from "../components/AnelProgresso";
 import { TURNOS, labelDoTurno, hojeISO, turnoJaPassou } from "../utils/turnos";
 
-
 const DEZ_MINUTOS_EM_SEGUNDOS = 600;
 
 export default function ReservarSala() {
@@ -22,6 +21,7 @@ export default function ReservarSala() {
   const [dia, setDia] = useState("");
   const [turno, setTurno] = useState("");
   const [reservaPendente, setReservaPendente] = useState<Reserva | null>(null);
+  const [confirmada, setConfirmada] = useState(false);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
@@ -37,17 +37,26 @@ export default function ReservarSala() {
     );
   }
 
-async function handleCriarReserva(event: FormEvent) {
-  event.preventDefault();
-  setErro("");
-
-  if (turnoJaPassou(dia, turno)) {
-    setErro("Esse dia ou turno já passou. Escolha outro horário.");
-    return;
+  function handleMudarDia(novoDia: string) {
+    setDia(novoDia);
+    setErro("");
   }
 
-  setCarregando(true);
+  function handleMudarTurno(novoTurno: string) {
+    setTurno(novoTurno);
+    setErro("");
+  }
 
+  async function handleCriarReserva(event: FormEvent) {
+    event.preventDefault();
+    setErro("");
+
+    if (turnoJaPassou(dia, turno)) {
+      setErro("Esse dia ou turno já passou. Escolha outro horário.");
+      return;
+    }
+
+    setCarregando(true);
     try {
       const reserva = await criarReserva({
         id_usuario: usuario!.id,
@@ -73,7 +82,7 @@ async function handleCriarReserva(event: FormEvent) {
     setCarregando(true);
     try {
       await atualizarStatusReserva(reservaPendente.id, "confirmada");
-      navigate("/minhas-reservas");
+      setConfirmada(true);
     } catch (error) {
       console.error(error);
       setErro("Não foi possível confirmar a reserva.");
@@ -81,6 +90,7 @@ async function handleCriarReserva(event: FormEvent) {
       setCarregando(false);
     }
   }
+
   async function handleCancelar() {
     if (!reservaPendente) return;
     setCarregando(true);
@@ -100,7 +110,34 @@ async function handleCriarReserva(event: FormEvent) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-papel px-6 py-12">
       <div className="w-full max-w-sm rounded-3xl border border-carvao/10 bg-superficie p-8 shadow-sm">
-        {!reservaPendente ? (
+        {confirmada ? (
+          <div className="flex flex-col items-center text-center">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-salvia/15 text-3xl text-salvia">
+              ✓
+            </div>
+            <h1 className="mb-1 font-display text-2xl font-semibold text-carvao">
+              Reserva confirmada!
+            </h1>
+            <p className="mb-6 text-sm text-cinza-verde">
+              Sua sala está garantida para {reservaPendente && labelDoTurno(reservaPendente.turno)}{" "}
+              do dia {reservaPendente?.dia.slice(0, 10)}.
+            </p>
+            <div className="flex w-full gap-3">
+              <button
+                onClick={() => navigate("/minhas-reservas")}
+                className="flex-1 rounded-full bg-mostarda py-2.5 font-medium text-carvao transition hover:bg-mostarda/90"
+              >
+                Ver minhas reservas
+              </button>
+              <button
+                onClick={() => navigate("/")}
+                className="flex-1 rounded-full border border-carvao/15 py-2.5 font-medium text-carvao transition hover:bg-carvao/5"
+              >
+                Voltar à Home
+              </button>
+            </div>
+          </div>
+        ) : !reservaPendente ? (
           <>
             <h1 className="mb-1 font-display text-3xl font-semibold text-carvao">
               Reservar sala
@@ -121,10 +158,10 @@ async function handleCriarReserva(event: FormEvent) {
                 <input
                   type="date"
                   value={dia}
-                  onChange={(e) => setDia(e.target.value)}
+                  onChange={(e) => handleMudarDia(e.target.value)}
                   min={hojeISO()}
                   required
-                  className="w-full rounded-xl border border-carvao/15 bg-papel px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
               </div>
 
@@ -132,9 +169,9 @@ async function handleCriarReserva(event: FormEvent) {
                 <label className="mb-1.5 block text-sm font-medium text-carvao">Turno</label>
                 <select
                   value={turno}
-                  onChange={(e) => setTurno(e.target.value)}
+                  onChange={(e) => handleMudarTurno(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-carvao/15 bg-papel px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 >
                   <option value="">Selecione um turno</option>
                   {TURNOS.map((t) => (

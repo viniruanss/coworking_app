@@ -9,15 +9,18 @@ export function labelDoTurno(valor: string): string {
 }
 
 export function hojeISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  const agora = new Date();
+  const ano = agora.getFullYear();
+  const mes = String(agora.getMonth() + 1).padStart(2, "0");
+  const dia = String(agora.getDate()).padStart(2, "0");
+  return `${ano}-${mes}-${dia}`;
 }
 
 export function turnoJaPassou(diaSelecionado: string, turnoValor: string): boolean {
   const hoje = hojeISO();
-  if (diaSelecionado < hoje) return true; // dia no passado
-  if (diaSelecionado > hoje) return false; // dia futuro, turno não importa
+  if (diaSelecionado < hoje) return true;
+  if (diaSelecionado > hoje) return false;
 
-  // é hoje: compara a hora atual com o fim do turno
   const turno = TURNOS.find((t) => t.valor === turnoValor);
   if (!turno) return false;
   return new Date().getHours() >= turno.fimHora;

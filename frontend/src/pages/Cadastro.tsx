@@ -78,7 +78,15 @@ export default function Cadastro() {
                 className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
-
+              <input
+                type="text"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                required
+                maxLength={11}
+                placeholder="Somente números"
+                className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+              />
             <div>
               <label className="mb-1.5 block text-sm font-medium text-carvao">E-mail</label>
               <input

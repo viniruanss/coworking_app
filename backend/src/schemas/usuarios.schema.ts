@@ -5,7 +5,7 @@ export const criarUsuarioSchema = z.object({
   email: z.string().email("E-mail inválido"),
   senha: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   telefone: z.string().optional(),
-  cpf: z.string().length(11, "CPF deve ter 11 dígitos"),
+  cpf: z.string().regex(/^\d{11}$/, "CPF deve conter exatamente 11 dígitos numéricos"),
 });
 
 export type CriarUsuarioInput = z.infer<typeof criarUsuarioSchema>;

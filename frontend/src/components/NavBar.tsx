@@ -13,17 +13,19 @@ export default function NavBar() {
   }
 
   return (
-    <nav className="flex items-center justify-between border-b border-carvao/10 bg-papel px-6 py-4">
-      <Link to="/" className="font-display text-2xl font-semibold text-carvao">
-        Hubin
-      </Link>
+    <nav className="flex flex-col gap-2 border-b border-carvao/10 bg-papel px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+        <Link to="/" className="font-display text-2xl font-semibold text-carvao">
+          Hubin
+        </Link>
+        {usuario && (
+          <span className="text-sm text-cinza-verde">Olá, {usuario.nome}!</span>
+        )}
+      </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3">
         {usuario ? (
           <>
-            <span className="font-body text-sm text-cinza-verde">
-              Olá, {usuario.nome}!
-            </span>
             {usuario.e_admin && (
               <Link
                 to="/admin"
@@ -38,8 +40,6 @@ export default function NavBar() {
             >
               Minhas reservas
             </Link>
-
-            {/* Botão de tema, aqui entre os links e o botão de Sair */}
             <button
               onClick={alternar}
               aria-label="Alternar tema"
@@ -47,7 +47,6 @@ export default function NavBar() {
             >
               {escuro ? "☀️" : "🌙"}
             </button>
-
             <button
               onClick={handleLogout}
               className="rounded-full bg-carvao px-4 py-1.5 text-sm font-medium text-papel hover:bg-carvao/90"
@@ -57,7 +56,6 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            {/* Também disponível para quem não está logado */}
             <button
               onClick={alternar}
               aria-label="Alternar tema"
@@ -65,7 +63,6 @@ export default function NavBar() {
             >
               {escuro ? "☀️" : "🌙"}
             </button>
-
             <Link
               to="/login"
               className="rounded-full bg-mostarda px-4 py-1.5 text-sm font-medium text-carvao hover:bg-mostarda/90"
