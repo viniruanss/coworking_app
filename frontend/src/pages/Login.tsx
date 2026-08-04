@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/authService";
 import { useAuth } from "../context/useAuth";
+import CampoSenha from "../components/CampoSenha";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -31,7 +32,6 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Painel lateral de identidade */}
       <div className="hidden w-1/2 flex-col justify-between bg-carvao p-12 lg:flex">
         <span className="font-display text-2xl font-semibold text-papel">Hubin</span>
         <div>
@@ -48,7 +48,6 @@ export default function Login() {
         <span className="text-sm text-cinza-verde">Hub + In</span>
       </div>
 
-      {/* Formulário */}
       <div className="flex w-full flex-col items-center justify-center bg-papel px-6 lg:w-1/2">
         <div className="w-full max-w-sm">
           <h1 className="mb-1 font-display text-3xl font-semibold text-carvao">
@@ -74,7 +73,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-black outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
 
@@ -82,13 +81,7 @@ export default function Login() {
               <label className="mb-1.5 block text-sm font-medium text-carvao">
                 Senha
               </label>
-              <input
-                type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-black outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
-              />
+              <CampoSenha value={senha} onChange={setSenha} />
             </div>
 
             <button

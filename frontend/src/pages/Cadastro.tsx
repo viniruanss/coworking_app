@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { cadastrar } from "../services/usuarioService";
+import CampoSenha from "../components/CampoSenha";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -50,7 +51,7 @@ export default function Cadastro() {
 
       <div className="flex w-full flex-col items-center justify-center bg-papel px-6 py-12 lg:w-1/2">
         <div className="w-full max-w-sm">
-          <h1 className="mb-1 font-display text-3xl font-semibold text-carvao">
+          <h1 className="mb-1 font-display text-3xl font-semibold text-cinza-verde">
             Criar conta
           </h1>
           <p className="mb-8 text-sm text-cinza-verde">Leva menos de um minuto</p>
@@ -69,13 +70,13 @@ export default function Cadastro() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-carvao">Nome</label>
+              <label className="mb-1.5 block text-sm font-medium text-cinza-verde">Nome</label>
               <input
                 type="text"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 required
-                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-cinza-verde outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
               <input
@@ -85,34 +86,26 @@ export default function Cadastro() {
                 required
                 maxLength={11}
                 placeholder="Somente números"
-                className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-superficie px-4 py-2.5 text-cinza-verde outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-carvao">E-mail</label>
+              <label className="mb-1.5 block text-sm font-medium text-cinza-verde">E-mail</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-cinza-verde outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
               />
             </div>
 
             <div>
               <label className="mb-1.5 block text-sm font-medium text-carvao">Senha</label>
-              <input
-                type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-                minLength={6}
-                className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
-              />
+              <CampoSenha value={senha} onChange={setSenha} minLength={6} />
             </div>
-
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-carvao">CPF</label>
+                <label className="mb-1.5 block text-sm font-medium text-cinza-verde">CPF</label>
                 <input
                   type="text"
                   value={cpf}
@@ -120,11 +113,11 @@ export default function Cadastro() {
                   required
                   maxLength={11}
                   placeholder="Só números"
-                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-cinza-verde outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-carvao">
+                <label className="mb-1.5 block text-sm font-medium text-cinza-verde">
                   Telefone
                 </label>
                 <input
@@ -132,7 +125,7 @@ export default function Cadastro() {
                   value={telefone}
                   onChange={(e) => setTelefone(e.target.value)}
                   placeholder="Opcional"
-                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-carvao outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
+                  className="w-full rounded-xl border border-carvao/15 bg-supercie px-4 py-2.5 text-cinza-verde outline-none transition focus:border-mostarda focus:ring-2 focus:ring-mostarda/20"
                 />
               </div>
             </div>
@@ -140,7 +133,7 @@ export default function Cadastro() {
             <button
               type="submit"
               disabled={carregando}
-              className="w-full rounded-full bg-mostarda py-3 font-medium text-carvao transition hover:bg-mostarda/90 disabled:opacity-50"
+              className="w-full rounded-full bg-mostarda py-3 font-medium text-cinza-verde transition hover:bg-mostarda/90 disabled:opacity-50"
             >
               {carregando ? "Criando conta..." : "Criar conta"}
             </button>
@@ -148,7 +141,7 @@ export default function Cadastro() {
 
           <p className="mt-6 text-center text-sm text-cinza-verde">
             Já tem conta?{" "}
-            <Link to="/login" className="font-medium text-carvao hover:underline">
+            <Link to="/login" className="font-medium text-cinza-verde hover:underline">
               Entrar
             </Link>
           </p>

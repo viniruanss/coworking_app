@@ -69,18 +69,17 @@ export async function atualizarStatusReserva(
   });
 
   if (novoStatus === "confirmada") {
-    try {
-      await enviarEmailConfirmacao({
-        emailDestino: reserva.usuario.email,
-        nomeUsuario: reserva.usuario.nome,
-        nomeSala: reserva.sala.nome,
-        dia: reserva.dia.toISOString(),
-        turno: reserva.turno,
-      });
-    } catch (error) {
+    // Sem "await" de propósito — dispara e não trava a resposta
+    enviarEmailConfirmacao({
+      emailDestino: reserva.usuario.email,
+      nomeUsuario: reserva.usuario.nome,
+      nomeSala: reserva.sala.nome,
+      dia: reserva.dia.toISOString(),
+      turno: reserva.turno,
+    }).catch((error) => {
       console.error("Falha ao enviar e-mail de confirmação:", error);
-    }
+    });
   }
 
-  return reserva;
+  return reserva; // responde imediatamente, sem esperar o e-mail
 }
