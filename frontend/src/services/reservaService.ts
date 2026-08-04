@@ -34,3 +34,7 @@ export async function listarMinhasReservas(): Promise<Reserva[]> {
   const response = await api.get<Reserva[]>("/reservas/minhas");
   return response.data;
 }
+
+export async function removerReserva(id: number): Promise<void> {
+  await api.delete(`/reservas/${id}`);
+}

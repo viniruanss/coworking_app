@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listarMinhasReservas, atualizarStatusReserva, type Reserva } from "../services/reservaService";
+import {
+  listarMinhasReservas,
+  atualizarStatusReserva,
+  removerReserva,
+  type Reserva,
+} from "../services/reservaService";
 import { listarSalas, type Sala } from "../services/salaService";
 import { labelDoTurno } from "../utils/turnos";
 
@@ -60,6 +65,17 @@ export default function MinhasReservas() {
     }
   }
 
+  async function handleRemover(id: number) {
+    if (!confirm("Remover esta reserva permanentemente?")) return;
+    try {
+      await removerReserva(id);
+      setReservas((prev) => prev.filter((r) => r.id !== id));
+    } catch (error) {
+      console.error(error);
+      setErro("Não foi possível remover a reserva");
+    }
+  }
+
   return (
     <div className="min-h-screen bg-papel px-6 py-8">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -115,12 +131,32 @@ export default function MinhasReservas() {
                   </span>
                 </div>
 
-                {reserva.status !== "cancelada" && (
+                {reserva.status !== "cancelada" ? (
                   <button
                     onClick={() => handleCancelar(reserva.id)}
                     className="rounded-full border border-terracota/20 px-4 py-1.5 text-sm font-medium text-terracota hover:bg-terracota/10"
                   >
                     Cancelar
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleRemover(reserva.id)}
+                    aria-label="Remover reserva"
+                    className="rounded-full border border-carvao/15 p-2 text-cinza-verde hover:bg-terracota/10 hover:text-terracota"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <line x1="10" y1="11" x2="10" y2="17" />
+                      <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
                   </button>
                 )}
               </div>

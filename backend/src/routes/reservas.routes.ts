@@ -9,5 +9,6 @@ router.get("/minhas", autenticarToken, reservasController.minhas);
 router.get("/:id", reservasController.show);
 router.post("/", autenticarToken, reservasController.store);
 router.patch("/:id", autenticarToken, reservasController.patch);
+router.delete("/:id", autenticarToken, reservasController.destroy);
 
 export default router;

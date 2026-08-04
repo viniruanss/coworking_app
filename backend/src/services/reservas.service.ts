@@ -14,7 +14,9 @@ export async function listarReservasDoUsuario(id_usuario: number): Promise<Reser
 export async function buscarReservaPorId(id: number): Promise<Reserva | null> {
   return prisma.reserva.findUnique({ where: { id } });
 }
-
+export async function removerReserva(id: number): Promise<void> {
+  await prisma.reserva.delete({ where: { id } });
+}
 export async function criarReservaPendente(dados: {
   id_usuario: number;
   id_sala: number;

@@ -7,14 +7,12 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export async function autenticar(email: string, senha: string) {
   const usuario = await prisma.usuario.findUnique({ where: { email } });
-  console.log("Usuário encontrado:", usuario); // debug temporário
 
   if (!usuario) {
     throw new Error("Credenciais inválidas");
   }
 
   const senhaConfere = await bcrypt.compare(senha, usuario.senha_hash);
-  console.log("Senha confere?", senhaConfere); // debug temporário
 
   if (!senhaConfere) {
     throw new Error("Credenciais inválidas");

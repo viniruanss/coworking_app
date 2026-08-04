@@ -54,3 +54,25 @@ export async function patch(req: Request<{ id: string }>, res: Response, next: N
     next(error);
   }
 }
+export async function destroy(req: Request<{ id: string }>, res: Response, next: NextFunction) {
+  try {
+    const id = parseInt(req.params.id);
+    const reserva = await reservasService.buscarReservaPorId(id);
+
+    if (!reserva) {
+      return res.status(404).json({ erro: "Reserva não encontrada" });
+    }
+
+    const ehDono = reserva.id_usuario === req.usuario!.id;
+    const ehAdmin = req.usuario!.e_admin;
+
+    if (!ehDono && !ehAdmin) {
+      return res.status(403).json({ erro: "Você não tem permissão para remover esta reserva" });
+    }
+
+    await reservasService.removerReserva(id);
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
